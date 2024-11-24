@@ -1,8 +1,17 @@
-# React + Vite
+# RBAC UI - Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **Role-Based Access Control (RBAC)** Admin Dashboard! This project provides a secure and user-friendly interface for administrators to manage users, roles, and permissions efficiently.
 
-Currently, two official plugins are available:
+## 🚀 Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Follow these steps to set up and run the project locally.
+
+### **1. Prerequisites**
+- [Node.js](https://nodejs.org/) (v14 or higher)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### **2. Installation**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/rbac-ui.git
+   cd rbac-ui
