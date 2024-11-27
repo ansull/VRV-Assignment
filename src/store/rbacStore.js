@@ -1,13 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-// Initial dummy data
-const initialUsers = [
-  { id: 1, name: 'Admin User', email: 'admin@example.com', roleId: 1, status: 'active' },
-  { id: 2, name: 'Manager User', email: 'manager@example.com', roleId: 2, status: 'active' },
-  { id: 3, name: 'Basic User', email: 'user@example.com', roleId: 3, status: 'inactive' }
-]
-
 const initialRoles = [
   {
     id: 1,
@@ -19,7 +12,7 @@ const initialRoles = [
     id: 2,
     name: 'Manager',
     description: 'Manage users and view reports',
-    permissions: ['view_dashboard', 'manage_users', 'view_reports']
+    permissions: ['view_dashboard', 'manage_users', 'view_reports', 'manage_roles', 'manage_permissions'] // Added permissions for manager
   },
   {
     id: 3,
@@ -32,7 +25,11 @@ const initialRoles = [
 const useRbacStore = create(
   persist(
     (set) => ({
-      users: initialUsers,
+      users: [
+        { id: 1, name: 'Admin User', email: 'admin@example.com', roleId: 1, status: 'active' },
+        { id: 2, name: 'Manager User', email: 'manager@example.com', roleId: 2, status: 'active' },
+        { id: 3, name: 'Basic User', email: 'user@example.com', roleId: 3, status: 'active' }
+      ],
       roles: initialRoles,
       permissions: [
         'view_dashboard',
@@ -81,7 +78,6 @@ const useRbacStore = create(
         roles: state.roles.filter(role => role.id !== id)
       })),
 
-      // Helper function to check permissions
       hasPermission: (roleId, permission) => {
         const role = initialRoles.find(r => r.id === roleId)
         return role?.permissions.includes(permission) || false
