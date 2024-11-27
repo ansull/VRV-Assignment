@@ -5,12 +5,11 @@ const Dashboard = () => {
   const { users, roles } = useRbacStore()
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-8">Dashboard Overview</h1>
-      
+    <div className="container mx-auto px-8 md:px-4 py-4">
+      <h1 className="text-2xl font-bold mb-4 md:mb-8 text-center lg:text-left">Dashboard Overview</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105">
-          <h2 className="text-xl font-semibold mb-2">Total Users</h2>
+          <h2 className="text-xl  font-semibold mb-2">Total Users</h2>
           <p className="text-4xl font-bold text-blue-600">{users.length}</p>
         </div>
         

@@ -30,7 +30,7 @@ const Roles = () => {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Roles Management</h1>
+        <h1 className="text-2xl ml-20 md:ml-12 lg:ml-0 font-bold text-center lg:text-left">Roles Management</h1>
         <button
           onClick={() => setShowForm(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
