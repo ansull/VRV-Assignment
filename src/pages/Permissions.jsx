@@ -2,6 +2,7 @@ import React from 'react'
 import useRbacStore from '../store/rbacStore'
 import { toast } from 'react-toastify'
 import useAuthStore from '../store/authStore'
+import TableContainer from '../components/TableContainer'
 
 const Permissions = () => {
   const { roles, permissions, updateRole } = useRbacStore()
@@ -14,17 +15,14 @@ const Permissions = () => {
 
     if (!targetRole || !userRole) return false
 
-    // Admin can edit all except their own role
     if (userRole.name === 'Admin') {
       return targetRole.id !== user.roleId
     }
 
-    // Manager can edit user roles and other manager roles
     if (userRole.name === 'Manager') {
       return ['User', 'Manager'].includes(targetRole.name) && targetRole.id !== user.roleId
     }
 
-    // Users can't edit any roles
     return false
   }
 
@@ -37,7 +35,6 @@ const Permissions = () => {
       return
     }
 
-    // Prevent removing critical permissions from admin
     if (role.name === 'Admin' && permission === 'manage_roles') {
       toast.error("Cannot remove critical permissions from Admin role")
       return
@@ -51,49 +48,51 @@ const Permissions = () => {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl  font-bold mb-6 text-center lg:text-left">Permissions Management</h1>
+    <div className="px-2 sm:px-4 py-4">
+      <h1 className="text-2xl font-bold mb-4">Permissions Management</h1>
       
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Permission
-              </th>
-              {roles.map(role => (
-                <th key={role.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {role.name}
+      <TableContainer>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                  Permission
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {permissions.map(permission => (
-              <tr key={permission}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{permission}</div>
-                </td>
                 {roles.map(role => (
-                  <td key={`${role.id}-${permission}`} className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      checked={role.permissions.includes(permission)}
-                      onChange={() => handlePermissionToggle(role.id, permission)}
-                      className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      disabled={
-                        role.name === 'Admin' && permission === 'manage_roles' ||
-                        !currentUserRole?.permissions.includes('manage_permissions') ||
-                        !canEditRole(role.id)
-                      }
-                    />
-                  </td>
+                  <th key={role.id} className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    {role.name}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {permissions.map(permission => (
+                <tr key={permission}>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">{permission}</div>
+                  </td>
+                  {roles.map(role => (
+                    <td key={`${role.id}-${permission}`} className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <input
+                        type="checkbox"
+                        checked={role.permissions.includes(permission)}
+                        onChange={() => handlePermissionToggle(role.id, permission)}
+                        className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        disabled={
+                          role.name === 'Admin' && permission === 'manage_roles' ||
+                          !currentUserRole?.permissions.includes('manage_permissions') ||
+                          !canEditRole(role.id)
+                        }
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </TableContainer>
     </div>
   )
 }

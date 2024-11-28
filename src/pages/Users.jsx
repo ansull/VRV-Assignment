@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import UserList from '../components/UserList'
 import useRbacStore from '../store/rbacStore'
+import TableContainer from '../components/TableContainer'
 
 const Users = () => {
   const { addUser, roles } = useRbacStore()
@@ -20,20 +21,20 @@ const Users = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl ml-20 md:ml-12 lg:ml-0 font-bold text-center lg:text-left">Users Management</h1>
+    <div className="px-2 sm:px-4 py-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Users Management</h1>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 text-sm sm:text-base"
         >
           Add New User
         </button>
       </div>
 
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white p-4 sm:p-6 rounded-lg w-full max-w-md">
             <h2 className="text-xl font-bold mb-4">Add New User</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -89,8 +90,9 @@ const Users = () => {
           </div>
         </div>
       )}
-
-      <UserList />
+      
+        <UserList />
+      
     </div>
   )
 }

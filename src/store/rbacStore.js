@@ -18,7 +18,7 @@ const initialRoles = [
     id: 3,
     name: 'User',
     description: 'Basic access',
-    permissions: ['view_dashboard']
+    permissions: ['view_dashboard','manage_users']
   }
 ]
 

@@ -11,12 +11,14 @@ import {
 } from '@heroicons/react/24/outline'
 import useAuthStore from '../store/authStore'
 import useRbacStore from '../store/rbacStore'
+import ConfirmDialog from './ConfirmDialog'
 
 const Sidebar = () => {
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
   const { roles } = useRbacStore()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
 
   const userRole = roles.find(role => role.id === user?.roleId)
 
@@ -31,7 +33,7 @@ const Sidebar = () => {
       path: '/users', 
       name: 'Users', 
       icon: UserGroupIcon,
-      permission: 'view_dashboard' // Changed to allow users to view
+      permission: 'manage_users'
     },
     { 
       path: '/roles', 
@@ -47,8 +49,13 @@ const Sidebar = () => {
     }
   ]
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setShowLogoutConfirm(true)
+  }
+
+  const handleLogoutConfirm = () => {
     logout()
+    setShowLogoutConfirm(false)
     navigate('/login')
   }
 
@@ -82,7 +89,7 @@ const Sidebar = () => {
           )
         ))}
         <button
-          onClick={handleLogout}
+          onClick={handleLogoutClick}
           className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 w-full"
         >
           <ArrowRightOnRectangleIcon className="h-6 w-6" />
@@ -94,26 +101,30 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Hamburger Button */}
-      <button
-        onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-white"
-      >
-        {isMobileMenuOpen ? (
-          <XMarkIcon className="h-6 w-6" />
-        ) : (
-          <Bars3Icon className="h-6 w-6" />
-        )}
-      </button>
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-40 flex items-center px-4">
+        <button
+          onClick={toggleMobileMenu}
+          className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+        >
+          {isMobileMenuOpen ? (
+            <XMarkIcon className="h-6 w-6" />
+          ) : (
+            <Bars3Icon className="h-6 w-6" />
+          )}
+        </button>
+        <h1 className="ml-4 text-xl font-semibold text-gray-800">
+          {menuItems.find(item => item.path === window.location.pathname)?.name || 'Dashboard'}
+        </h1>
+      </div>
 
       {/* Mobile Sidebar */}
       <div
-        className={`lg:hidden fixed inset-0 z-40 transform ${
+        className={`lg:hidden fixed inset-0 z-30 transform ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out`}
       >
-        <div className="bg-gray-800 text-white w-64 min-h-screen p-4">
-          <h1 className="text-2xl font-bold mb-8 mt-16">RBAC Admin</h1>
+        <div className="bg-gray-800 text-white w-64 min-h-screen p-4 pt-20">
           {sidebarContent}
         </div>
         <div
@@ -123,10 +134,18 @@ const Sidebar = () => {
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block bg-gray-800 text-white w-64 min-h-screen p-4">
+      <div className="hidden lg:block fixed bg-gray-800 text-white w-64 min-h-screen p-4">
         <h1 className="text-2xl font-bold mb-8">RBAC Admin</h1>
         {sidebarContent}
       </div>
+
+      <ConfirmDialog
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={handleLogoutConfirm}
+        title="Confirm Logout"
+        message="Are you sure you want to logout?"
+      />
     </>
   )
 }
