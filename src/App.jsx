@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div className="flex min-h-screen bg-gray-100">
         {isAuthenticated && <Sidebar />}
-        <main className={`flex-1 transition-all duration-300 ${isAuthenticated ? 'lg:ml-64' : ''}`}>
+        <main className={`flex-1 transition-all duration-300 ${isAuthenticated ? 'lg:ml-64 max-w-full' : ''}`}>
           <div className={` ${isAuthenticated ? 'mx-4 md:mx-8 my-16 lg:my-4' : ''}`}>
             <Routes>
               <Route path="/login" element={<Login />} />
